@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        DOCKERHUB_CREDENTIALS = credentials('docker_hub')
         DOCKERHUB_USERNAME = 'sia21'
         FRONTEND_IMAGE = "${DOCKERHUB_USERNAME}/react-frontend"
         BACKEND_IMAGE = "${DOCKERHUB_USERNAME}/flask-backend"
@@ -84,8 +84,7 @@ pipeline {
             echo 'Pipeline failed! ❌'
         }
         always {
-            echo 'Cleaning up workspace...'
-            cleanWs()
+            echo 'Pipline Finished.'
         }
     }
 }
