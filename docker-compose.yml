@@ -6,7 +6,6 @@ services:
         build:
             context: ./frontend
             dockerfile: Dockerfile
-        tty: true
         ports:
             - "3000:3000"
         volumes: 
@@ -14,6 +13,7 @@ services:
             - /app/node_modules
         networks:
             - frontend
+        command: yarn start
 
     mongodb:
         image: mongo
