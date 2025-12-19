@@ -1,17 +1,18 @@
-
 FROM node:18
 
 WORKDIR /app
 
+# Copier les fichiers de dépendances
+COPY package.json yarn.lock ./
+
+# Installer les dépendances
+RUN yarn install --frozen-lockfile
+
+# Copier le code source
 COPY . .
 
-RUN yarn
+# Exposer le port
+EXPOSE 3000
 
-RUN yarn global add serve
-
-#CMD [ "serve" , "-p" , "80" , "-s" , "."]
-
-# expose locally the app
-
-CMD [ "yarn" , "start"]   
-
+# Démarrer l'application
+CMD ["yarn", "start"]
