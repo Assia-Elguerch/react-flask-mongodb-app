@@ -9,7 +9,7 @@ services:
         ports:
             - "3000:3000"
         volumes: 
-            - ./frontend:/app
+            - /var/jenkins_home/workspace/react-flask-mongodb-pipeline/frontend:/app
         networks:
             - frontend
         command: yarn start
