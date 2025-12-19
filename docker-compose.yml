@@ -9,7 +9,9 @@ services:
         ports:
             - "3000:3000"
         tty: true 
-
+        volumes:
+            - ./frontend:/app
+            - /app/node_modules
         networks:
             - frontend
     
