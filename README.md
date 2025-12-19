@@ -1,16 +1,26 @@
 # React + Flask + MongoDB Dockerized App
 
-![Project Logo](<img width="2048" height="970" alt="image" src="https://github.com/user-attachments/assets/cd078f10-4df4-4169-ae82-4a93fb0c1289" />)
+
 
 ## 🚀 Description
 
 Cette application est un projet full-stack complet utilisant **React** pour le frontend, **Flask** pour le backend et **MongoDB** comme base de données. L’ensemble est entièrement **dockerisé** et automatisé via un **pipeline CI/CD avec Jenkins**, permettant un déploiement rapide et fiable.
 
-Le projet illustre :
+### Le projet illustre :
 - La création d’une application web moderne full-stack.
 - L’utilisation de Docker pour isoler et déployer les services.
 - La mise en place d’un pipeline CI/CD pour automatiser les builds, tests et déploiement.
 - L’intégration avec GitHub pour la gestion du code source.
+
+---
+
+### 📚 Concepts clés
+
+- CI/CD (Continuous Integration / Continuous Deployment) : Processus d’intégration continue et déploiement continu     - pour automatiser la compilation, les tests et le déploiement.
+- Pipeline Jenkins : Script décrivant toutes les étapes d’un workflow automatisé (build, test, deploy).
+- Docker : Technologie de conteneurisation qui permet d’isoler et déployer facilement les applications.
+- Docker Compose : Outil pour définir et lancer des applications multi-conteneurs.
+- MongoDB Volume : Permet de persister les données entre les redémarrages des conteneurs.
 
 ---
 
@@ -34,3 +44,4 @@ Le projet illustre :
 │  Frontend │ <-->  │   Backend  │ <-->  │   MongoDB   │
 │ React App │       │ Flask API  │       │ Database    │
 └───────────┘       └────────────┘       └─────────────┘
+
