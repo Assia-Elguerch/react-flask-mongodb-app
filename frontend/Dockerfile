@@ -1,17 +1,23 @@
-
 FROM node:18
 
 WORKDIR /app
 
+# Copier package.json et yarn.lock pour installer les dépendances
+COPY package*.json ./
+
+# Installer les dépendances
+RUN yarn install
+
+# Copier tout le projet
 COPY . .
 
-RUN yarn
+# Build de l'application React
+RUN yarn build
 
+# Installer 'serve' pour servir le build
 RUN yarn global add serve
 
-#CMD [ "serve" , "-p" , "80" , "-s" , "."]
+# Servir la version buildée
+CMD ["serve", "-s", "build", "-l", "3000"]
 
-# expose locally the app
-
-CMD [ "yarn" , "start"]
 
