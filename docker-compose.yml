@@ -8,11 +8,11 @@ services:
             dockerfile: Dockerfile
         ports:
             - "3000:3000"
-        volumes: 
-            - /var/jenkins_home/workspace/react-flask-mongodb-pipeline/frontend:/app
+        tty: true 
+
         networks:
             - frontend
-        command: yarn start
+    
 
     mongodb:
         image: mongo
