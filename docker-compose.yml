@@ -17,7 +17,7 @@ services:
 
     mongodb:
         image: mongo
-        container_name: mongo
+        container_name: mongodb_v1
         restart: unless-stopped
         command: mongod --auth
         environment:

@@ -44,7 +44,7 @@ pipeline {
                     sh 'sleep 10'
                     
                     // Test API
-                    sh 'curl -f http://localhost:5000/api/tasks || exit 1'
+                    sh 'curl -f http://api:5000/api/tasks || exit 1'
                     
                     echo 'Application is running successfully!'
                 }
