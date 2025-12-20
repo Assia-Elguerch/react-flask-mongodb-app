@@ -45,7 +45,7 @@ Ce projet illustre les compétences suivantes :
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                      ARCHITECTURE GLOBALE                    │
+│                      ARCHITECTURE GLOBALE                   │
 └─────────────────────────────────────────────────────────────┘
 
 ┌──────────────┐          ┌──────────────┐          ┌──────────────┐
@@ -396,5 +396,6 @@ http://localhost:5000/api
 | **Révocation** | Difficile | Immédiate |
 | **Accès** | Tout le monde | Contrôlé par token |
 | **Sécurité** | Faible | Élevée |
+
 
 
