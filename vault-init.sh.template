@@ -1,47 +1,23 @@
 #!/bin/bash
 
-echo "Initialisation de HashiCorp Vault"
+echo "🔐 Initialisation de Vault..."
 
-sleep 5
-
-export VAULT_ADDR='http://localhost:8200'
-export VAULT_TOKEN='myroot'
-
-echo ""
-echo "Vérification de la connexion à Vault..."
-
-if ! vault status &> /dev/null; then
-    echo "Erreur: Vault n'est pas accessible"
-    exit 1
-fi
-
-echo "Vault est accessible"
-
-echo ""
-echo "Stockage des secrets MongoDB dans Vault..."
+docker exec vault sh -c '
+export VAULT_ADDR=http://127.0.0.1:8200
+export VAULT_TOKEN=root
 
 vault kv put secret/mongodb \
-    host=mongodb \
-    username=assia \
-    password=test \
-    database=flaskdb
+  username=assia \
+  password=test \
+  database=flaskdb \
+  host=mongodb
 
-echo ""
-echo "Stockage des secrets Docker Hub dans Vault..."
-
-# IMPORTANT: Remplacez ces valeurs par vos vraies credentials
 vault kv put secret/dockerhub \
-    username=YOUR_DOCKERHUB_USERNAME \
-    access_token=YOUR_DOCKER_ACCESS_TOKEN
+  username=YOUR DOCKER HUB USERNAME \
+  password=YOUR DOCKER HUB SECRET TOKEN OR PASSWORD
 
+vault kv get secret/mongodb
+vault kv get secret/dockerhub
+'
 
-echo "Stockage du token GitHub dans Vault..."
-
-vault kv put secret/github \
-    token=YOUR_GITHUB_PERSONAL_ACCESS_TOKEN \
-    username=YOUR_GITHUB_USERNAME
-
-
-echo "Secrets stockés avec succès"
-
-echo "ATTENTION: N'oubliez pas de remplacer les valeurs par défaut"
+echo "✅ Vault initialisé avec succès"
