@@ -88,4 +88,3 @@ To remediate these vulnerabilities, the following actions are recommended:
 ---
 
 _This report is for educational and remediation purposes only._
-
