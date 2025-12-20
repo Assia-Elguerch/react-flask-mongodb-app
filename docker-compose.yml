@@ -1,20 +1,21 @@
-version: '3.8'
+version: '3.3'
 
 services:
-    vault:
-      image: hashicorp/vault:1.15
-      container_name: vault
-      ports:
-         - "8200:8200"
-      environment:
-      VAULT_DEV_ROOT_TOKEN_ID: root
-      VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
-      cap_add:
-        - IPC_LOCK
-      networks:
-        - backend
+   vault:
+    image: hashicorp/vault:1.13
+    container_name: vault
+    ports:
+      - "8200:8200"
+    environment:
+      - VAULT_DEV_ROOT_TOKEN_ID=root
+      - VAULT_DEV_LISTEN_ADDRESS=0.0.0.0:8200
+    cap_add:
+      - IPC_LOCK
+    networks:
+     - backend
 
-    client:
+
+   client:
         build:
             context: ./frontend
             dockerfile: Dockerfile
@@ -28,7 +29,7 @@ services:
             - frontend
     
 
-    mongodb:
+   mongodb:
         image: mongo
         container_name: mongodb_v1
         restart: unless-stopped
@@ -44,7 +45,7 @@ services:
         networks:
           - backend
 
-    api:
+   api:
         build: 
             context: ./backend
             dockerfile: Dockerfile
