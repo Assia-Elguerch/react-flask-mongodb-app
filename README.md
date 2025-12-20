@@ -1,25 +1,21 @@
-# Application TODO List - Full Stack avec CI/CD et Vault
+# Application TODO List - Full Stack avec CI/CD 
 
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 ![Jenkins](https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white)
-![Vault](https://img.shields.io/badge/Vault-000000?style=for-the-badge&logo=vault&logoColor=white)
 
 ## Table des matières
 - [Description](#description)
 - [Architecture](#architecture)
 - [Technologies utilisées](#technologies-utilisées)
-- [Sécurité avec HashiCorp Vault](#sécurité-avec-hashicorp-vault)
 - [Prérequis](#prérequis)
 - [Installation](#installation)
 - [Utilisation](#utilisation)
 - [Pipeline CI/CD](#pipeline-cicd)
 - [Structure du projet](#structure-du-projet)
-- [API Endpoints](#api-endpoints)
-- [Troubleshooting](#troubleshooting)
-- [Auteur](#auteur)
+
 
 ## Description
 
@@ -99,13 +95,11 @@ Ce projet illustre les compétences suivantes :
 - **Flask-PyMongo** - Extension pour l'intégration MongoDB
 - **Flask-CORS** - Gestion des requêtes cross-origin
 - **Gunicorn** - Serveur WSGI de production
-- **hvac** - Client Python pour HashiCorp Vault
+
 
 ### Base de données
 - **MongoDB 4.4** - Base de données NoSQL orientée documents
 
-### Sécurité
-- **HashiCorp Vault** - Gestion centralisée des secrets et credentials
 
 ### DevOps
 - **Docker** - Conteneurisation des services
@@ -113,66 +107,6 @@ Ce projet illustre les compétences suivantes :
 - **Jenkins** - Automatisation CI/CD
 - **Git/GitHub** - Contrôle de version
 
-## Sécurité avec HashiCorp Vault
-
-### Pourquoi Vault ?
-
-HashiCorp Vault est utilisé pour gérer de manière sécurisée tous les secrets de l'application :
-
-**Avant Vault (Non sécurisé)**
-```yaml
-environment:
-  MONGODB_PASSWORD: test  # Mot de passe en clair dans le code
-```
-
-**Avec Vault (Sécurisé)**
-```python
-mongodb_secrets = get_secret_from_vault('mongodb')
-mongodb_password = mongodb_secrets.get('password')
-```
-
-### Secrets gérés par Vault
-
-- **MongoDB Credentials** : Username, password, database name, host
-- **Docker Hub Token** : Access token pour push d'images
-- **GitHub Token** : Personal access token pour accès au repository
-
-### Avantages de Vault
-
-- Chiffrement des secrets au repos et en transit
-- Gestion centralisée des accès
-- Audit logging de tous les accès aux secrets
-- Rotation automatique des secrets possible
-- Révocation facile des credentials compromis
-- Aucun secret en clair dans le code ou les fichiers de configuration
-
-### Accéder à Vault
-
-1. **Interface Web** : http://localhost:8200
-2. **Token** : `myroot` (développement uniquement)
-3. **CLI** : `vault kv get secret/mongodb`
-
-### Architecture de sécurité
-
-```
-┌─────────────┐
-│ Application │
-└──────┬──────┘
-       │
-       │ Demande credentials
-       │
-       ▼
-┌─────────────┐
-│    Vault    │  Vérifie le token
-└──────┬──────┘  Audit log
-       │
-       │ Retourne secrets chiffrés
-       │
-       ▼
-┌─────────────┐
-│   MongoDB   │  Connexion sécurisée
-└─────────────┘
-```
 
 ## Prérequis
 
@@ -219,47 +153,24 @@ YOUR_GITHUB_PERSONAL_ACCESS_TOKEN  # Token GitHub
 YOUR_GITHUB_USERNAME       # Votre username GitHub
 ```
 
-### 4. Lancer l'application avec Vault
+### 4. Lancer l'application 
 
 ```bash
 # Arrêter les anciens conteneurs
 docker-compose down -v
 
-# Démarrer tous les services (incluant Vault)
+# Démarrer tous les services 
 docker-compose up -d
-
-# Attendre que Vault soit prêt (10 secondes)
-sleep 10
-
-# Initialiser Vault avec les secrets
-./vault-init.sh
 
 # Vérifier que tous les conteneurs sont actifs
 docker-compose ps
 ```
 
-### 5. Vérifier l'état des services
-
-```bash
-# Vérifier que Vault est connecté
-curl http://localhost:5000/api/health
-
-# Résultat attendu :
-{
-  "status": "healthy",
-  "vault": "Connected",
-  "database": "Connected",
-  "mongodb_host": "mongodb",
-  "mongodb_database": "flaskdb",
-  "security": "Token-based with Vault"
-}
 ```
-
 ### 6. Accéder aux interfaces
 
 - **Frontend** : http://localhost:3000
 - **Backend API** : http://localhost:5000/api/tasks
-- **Vault UI** : http://localhost:8200 (Token: `myroot`)
 - **MongoDB** : localhost:27017
 
 ## Utilisation
@@ -282,8 +193,6 @@ docker-compose up --build
 # Voir les logs en temps réel
 docker-compose logs -f api
 
-# Voir les logs de Vault
-docker-compose logs -f vault
 
 # Supprimer tous les conteneurs et volumes
 docker-compose down -v
@@ -334,25 +243,12 @@ show collections
 db.tasks.find().pretty()
 ```
 
-### Gérer les secrets avec Vault
 
-```bash
-# Voir tous les secrets MongoDB
-docker exec -it vault vault kv get secret/mongodb
 
-# Voir tous les secrets Docker Hub
-docker exec -it vault vault kv get secret/dockerhub
-
-# Modifier un secret
-docker exec -it vault vault kv put secret/mongodb password=nouveaumotdepasse
-
-# Liste tous les secrets
-docker exec -it vault vault kv list secret/
-```
 
 ## Pipeline CI/CD
 
-### Workflow Jenkins avec Vault
+### Workflow Jenkins avec Vault a ajouter pour DevSecOps
 
 Le pipeline Jenkins automatise entièrement le processus de déploiement avec sécurité Vault :
 
@@ -428,11 +324,7 @@ Dans Jenkins : **Manage Jenkins** → **Manage Plugins** → **Available**
 
 **Manage Jenkins** → **Manage Credentials** → **Add Credentials**
 
-**Credential 1 : Vault Token**
-- Kind: Secret text
-- Secret: `myroot`
-- ID: `vault-token`
-- Description: Vault Root Token
+
 
 **Credential 2 : Docker Hub (optionnel, fallback)**
 - Kind: Username with password
@@ -469,7 +361,7 @@ react-flask-mongodb-app/
 │   ├── requirements.txt     # Dépendances Python (incluant hvac)
 │   └── Dockerfile           # Image Docker backend
 │
-├── vault-init.sh             # Script d'initialisation Vault
+├── vault-init.sh             # Script d'initialisation Vault a ajouer pour DevSecOps
 ├── docker-compose.yml        # Orchestration (incluant Vault)
 ├── Jenkinsfile              # Pipeline CI/CD avec Vault
 ├── .gitignore               # Fichiers à ignorer
@@ -482,11 +374,10 @@ react-flask-mongodb-app/
 http://localhost:5000/api
 ```
 
-## Sécurité
 
 ### Bonnes pratiques implémentées
 
-- **Vault pour les secrets** : Tous les credentials stockés de manière chiffrée
+- **Vault pour les secrets DEVSECOPS** : Tous les credentials stockés de manière chiffrée
 - **Token-based authentication** : Pas de mots de passe en clair
 - **CORS configuré** : Protection contre les requêtes cross-origin malveillantes
 - **Authentification MongoDB** : Base de données protégée
@@ -495,7 +386,7 @@ http://localhost:5000/api
 - **No secrets in code** : Aucun credential dans le code source
 - **Environment variables** : Configuration via variables d'environnement
 
-### Comparaison : Avant / Après Vault
+### Comparaison : Avant DEVOPS / Après Vault DEVSECOPS
 
 | Aspect | Sans Vault | Avec Vault |
 |--------|------------|------------|
@@ -505,4 +396,5 @@ http://localhost:5000/api
 | **Révocation** | Difficile | Immédiate |
 | **Accès** | Tout le monde | Contrôlé par token |
 | **Sécurité** | Faible | Élevée |
+
 
