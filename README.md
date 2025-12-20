@@ -1,47 +1,91 @@
-# React + Flask + MongoDB Dockerized App
+# Security Assessment: React-Flask-MongoDB Application
 
+**Date:** December 20, 2025
+**Author:** Saad Sai El Haq
+**Methodology:** Blackbox Penetration Test
 
+## 🛡️ Executive Summary
 
-## 🚀 Description
+This repository contains the full Penetration Test Report for a containerized **React-Flask-MongoDB** application. The assessment was conducted using a **Blackbox methodology** against a local deployment (`127.0.0.1`) to identify critical security flaws.
 
-Cette application est un projet full-stack complet utilisant **React** pour le frontend, **Flask** pour le backend et **MongoDB** comme base de données. L’ensemble est entièrement **dockerisé** et automatisé via un **pipeline CI/CD avec Jenkins**, permettant un déploiement rapide et fiable.
-
-### Le projet illustre :
-- La création d’une application web moderne full-stack.
-- L’utilisation de Docker pour isoler et déployer les services.
-- La mise en place d’un pipeline CI/CD pour automatiser les builds, tests et déploiement.
-- L’intégration avec GitHub pour la gestion du code source.
+The audit identified **3 key vulnerabilities**, resulting in a **Critical** security posture rating. The findings demonstrate that an unauthenticated attacker could fully compromise the database, delete all data, and access backend credentials.
 
 ---
 
-### 📚 Concepts clés
+## 🔍 Reconnaissance & Scope
 
-- CI/CD (Continuous Integration / Continuous Deployment) : Processus d’intégration continue et déploiement continu     - pour automatiser la compilation, les tests et le déploiement.
-- Pipeline Jenkins : Script décrivant toutes les étapes d’un workflow automatisé (build, test, deploy).
-- Docker : Technologie de conteneurisation qui permet d’isoler et déployer facilement les applications.
-- Docker Compose : Outil pour définir et lancer des applications multi-conteneurs.
-- MongoDB Volume : Permet de persister les données entre les redémarrages des conteneurs.
+An initial network scan was performed using `nmap` to identify the attack surface on `127.0.0.1`.
 
----
+**Open Ports Identified:**
 
-## 🧩 Technologies utilisées
-
-| Composant | Technologie |
-|-----------|------------|
-| Frontend  | React.js, Yarn |
-| Backend   | Flask, Python 3.8, Gunicorn |
-| Base de données | MongoDB 6 |
-| Conteneurisation | Docker, Docker Compose |
-| CI/CD     | Jenkins Pipeline |
-| Contrôle de version | Git, GitHub |
+- **Port 3000:** Node.js (Frontend)
+- **Port 5000:** Gunicorn/Flask (Backend API)
 
 ---
 
-## 📦 Architecture du projet
+## 🚨 Vulnerability Findings
 
-```text
-┌───────────┐       ┌────────────┐       ┌─────────────┐
-│  Frontend │ <-->  │   Backend  │ <-->  │   MongoDB   │
-│ React App │       │ Flask API  │       │ Database    │
-└───────────┘       └────────────┘       └─────────────┘
+### 1. [CRITICAL] Broken Access Control (Insecure Deletion)
+
+**Description:**
+The API endpoint `DELETE /api/task/<id>` lacks any authentication checks. An anonymous attacker can delete any task simply by knowing its ID.
+
+**Proof of Concept:**
+The following `curl` command successfully deleted a task without a token:
+
+```bash
+curl -X DELETE -v http://127.0.0.1:5000/api/task/694683af4d6867e0cabfd229
+```
+
+**Impact:** Complete loss of data integrity and availability. A script could wipe the entire database in minutes, causing catastrophic data loss.
+
+---
+
+### 2. [HIGH] Hardcoded Credentials
+
+**Description:**
+Database credentials were found hardcoded in plaintext within the `docker-compose.yml` file and exposed via environment variables.
+
+**Evidence:**
+
+```yaml
+MONGO_INITDB_ROOT_USERNAME: assia
+MONGO_INITDB_ROOT_PASSWORD: test
+```
+
+**Impact:** Violates confidentiality. If leaked into version control (e.g., GitHub), attackers gain administrative access to the database to steal or modify data.
+
+---
+
+### 3. [MEDIUM] Missing Rate Limiting
+
+**Description:**
+The API does not restrict the number of requests a user can make in a given timeframe.
+
+**Proof of Concept:**
+Server resources were exhausted by flooding the endpoint with thousands of POST requests per second using a simple loop:
+
+```bash
+while true; do
+    curl -X POST -H "Content-Type: application/json" \
+    -d '{"title":"DoS Attack"}' \
+    http://127.0.0.1:5000/api/task > /dev/null &
+done
+```
+
+**Impact:** High vulnerability to Denial of Service (DoS) and Brute Force attacks, potentially making the website unreachable for legitimate users.
+
+---
+
+## 🛠️ Recommendations
+
+To remediate these vulnerabilities, the following actions are recommended:
+
+- **Implement Authentication:** Use JWT (JSON Web Tokens) to verify user identity before allowing DELETE or PUT operations.
+- **Secrets Management:** Move credentials to a `.env` file and exclude it from version control.
+- **Enable Rate Limiting:** Implement Flask-Limiter to restrict request frequency (e.g., 100 requests per minute per IP).
+
+---
+
+_This report is for educational and remediation purposes only._
 
