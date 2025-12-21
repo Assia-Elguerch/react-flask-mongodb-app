@@ -15,8 +15,9 @@ services:
         networks:
             - frontend
             - backend
+        depends_on:
+          - api
 
-    
 
    mongodb:
         image: mongo
