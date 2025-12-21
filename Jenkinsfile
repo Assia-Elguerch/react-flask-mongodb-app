@@ -42,10 +42,10 @@ pipeline {
                     sh 'docker-compose up -d'
                     
                     // Wait for services to be ready
-                    sh 'sleep 10'
+                    sh 'sleep 20'
                     
                     // Test API
-                    sh 'curl -f http://localhost:5000/api/tasks || exit 1'
+                    sh 'curl -f http://api:5000/api/tasks || exit 1'
                     
                     echo 'Application is running successfully!'
                 }
