@@ -45,7 +45,7 @@ pipeline {
                     sh 'sleep 20'
                     
                     // Test API
-                    sh 'curl -f http://api:5000/api/tasks || exit 1'
+                    sh 'docker-compose exec -T api curl -f http://localhost:5000/api/tasks || exit 1'
                     
                     echo 'Application is running successfully!'
                 }
