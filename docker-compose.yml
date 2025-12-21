@@ -8,7 +8,10 @@ services:
             dockerfile: Dockerfile
         ports:
             - "3000:3000"
-        tty: true 
+        tty: true
+        environment:
+            - API_PORT=5000
+            - API_HOST=api
         #volumes:
        #     - ./frontend:/app
         #    - /app/node_modules

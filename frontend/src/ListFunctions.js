@@ -1,8 +1,7 @@
 import axios from 'axios'
+import { API_URL } from './config'
 
-// Configuration API adaptée à l'environnement
-// En Docker: utilise api:5000, En local: utilise localhost:5000
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000'
+// API_URL est automatiquement détecté selon l'environnement (local ou Docker)
 
 export const getList = () => {
     return axios

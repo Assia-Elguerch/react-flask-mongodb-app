@@ -4,3 +4,4 @@ __pycache__/
 .env
 vault-init.sh
 running.sh
+DEMO_GUIDE.md
