@@ -17,6 +17,8 @@ services:
             - backend
         depends_on:
           - api
+        extra_hosts:
+          - "host.docker.internal:host-gateway"
 
 
    mongodb:
