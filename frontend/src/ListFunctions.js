@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'http://host.docker.internal:5000'
+const API_URL = 'http://api:5000'
 
 export const getList = () => {
     return axios
