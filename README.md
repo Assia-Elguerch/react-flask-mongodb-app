@@ -1,4 +1,4 @@
-# 📝 TODO List Full-Stack avec CI/CD
+# 📝 TODO List Full-Stack avec CI/CD DevOps
 
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
@@ -192,4 +192,5 @@ http://localhost:5000/api
 
 
 Realisé par assia el guerch
+
 
