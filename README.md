@@ -26,11 +26,12 @@ Cette application est une **TODO List full-stack** moderne qui illustre :
 
 ### Architecture globale
 
+````bash
 ┌──────────────┐       ┌──────────────┐       ┌──────────────┐
 │  Frontend    │  HTTP │   Backend    │  CRUD │   MongoDB    │
 │  React:3000  │ <---->│  Flask:5000  │ <---->│  Port:27017  │
 └──────────────┘       └──────────────┘       └──────────────┘
-
+````
 
 ### Flux de données
 
@@ -143,7 +144,7 @@ curl -X DELETE http://localhost:5000/api/task/TASK_ID
 - Tag des images
 
 ## ℹ️ Informations
-> 🔹 Les étapes de Vault / DevSecOps sont documentées comme perspectives futures pour sécuriser les credentials et améliorer l’audit.
+>  Les étapes de Vault / DevSecOps sont documentées comme perspectives futures pour sécuriser les credentials et améliorer l’audit.
 
 📂 Structure du projet
 
@@ -188,3 +189,7 @@ react-flask-mongodb-app/
 
 ## 🌐 Base URL
 http://localhost:5000/api
+
+
+Realisé par assia el guerch
+
